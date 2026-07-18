@@ -11,8 +11,7 @@ interface TypingInputProps {
 }
 
 /**
- * mobile-spec.md §2 그대로: 실제 IME 조합은 화면에 보이지 않는 hidden input에 위임하고,
- * 화면에는 커스텀 렌더링(글자별 하이라이트)만 보여준다.
+ * IME 조합은 실제 input에 위임하고, 목표 문구는 글자별 하이라이트로 보여준다.
  */
 export function TypingInput({
   expectedText,
@@ -22,19 +21,19 @@ export function TypingInput({
   onSettledChange,
   onRawKeystroke,
 }: TypingInputProps) {
-  const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { handleCompositionStart, handleCompositionEnd, handleInput, handleKeyDown } = useComposedInput({
     onSettledChange,
     onRawKeystroke,
   });
 
   useEffect(() => {
-    if (!disabled) hiddenInputRef.current?.focus();
+    if (!disabled) inputRef.current?.focus();
   }, [disabled, expectedText]);
 
-  // 역이 바뀌면(expectedText 변경) hidden input 값도 비워 다음 역 입력을 새로 받는다.
+  // 역이 바뀌면(expectedText 변경) input 값도 비워 다음 역 입력을 새로 받는다.
   useEffect(() => {
-    if (hiddenInputRef.current) hiddenInputRef.current.value = "";
+    if (inputRef.current) inputRef.current.value = "";
   }, [expectedText]);
 
   return (
@@ -55,9 +54,22 @@ export function TypingInput({
         ))}
       </div>
       <input
-        ref={hiddenInputRef}
+        ref={inputRef}
         disabled={disabled}
-        style={{ position: "absolute", opacity: 0, pointerEvents: "none" }}
+        aria-label="역 이름 입력"
+        placeholder="여기에 역 이름을 입력하세요"
+        style={{
+          boxSizing: "border-box",
+          width: "min(100%, 440px)",
+          marginTop: 12,
+          padding: "12px 14px",
+          border: `2px solid ${isErrorState ? "#f87171" : "#22d3ee"}`,
+          borderRadius: 8,
+          background: "#1f2937",
+          color: "#f9fafb",
+          fontSize: 20,
+          outline: "none",
+        }}
         onCompositionStart={handleCompositionStart}
         onCompositionEnd={handleCompositionEnd}
         onInput={handleInput}
