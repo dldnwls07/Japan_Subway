@@ -1,0 +1,11 @@
+{
+  "name": "@metro-typing/mobile",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Phase 2 대상 — mobile-spec.md 참고. 아직 Expo 프로젝트가 초기화되지 않았다.' && exit 1"
+  },
+  "dependencies": {
+    "@metro-typing/core-engine": "workspace:*"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "lineId": "tokyo-metro-ginza",
+  "lineNameKo": "도쿄메트로 긴자선",
+  "note": "Phase 0 좌표는 대략적 근사치다(정밀 실측 아님). Phase 1에서 ekidata/국토수치정보 원본으로 교체할 것 — 3.2절 데이터 파이프라인 참고.",
+  "stations": [
+    { "stationId": "G01", "sequence": 1, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7016, 35.658], "names": { "kanji": "渋谷", "kana": "しぶや", "romaji": "shibuya", "hangul": "시부야" } },
+    { "stationId": "G02", "sequence": 2, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7124, 35.6654], "names": { "kanji": "表参道", "kana": "おもてさんどう", "romaji": "omotesando", "hangul": "오모테산도" } },
+    { "stationId": "G03", "sequence": 3, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7176, 35.6697], "names": { "kanji": "外苑前", "kana": "がいえんまえ", "romaji": "gaienmae", "hangul": "가이엔마에" } },
+    { "stationId": "G04", "sequence": 4, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7226, 35.6726], "names": { "kanji": "青山一丁目", "kana": "あおやまいっちょうめ", "romaji": "aoyama-itchome", "hangul": "아오야마잇초메" } },
+    { "stationId": "G05", "sequence": 5, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7368, 35.6772], "names": { "kanji": "赤坂見附", "kana": "あかさかみつけ", "romaji": "akasaka-mitsuke", "hangul": "아카사카미쓰케" } },
+    { "stationId": "G06", "sequence": 6, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7398, 35.6721], "names": { "kanji": "溜池山王", "kana": "ためいけさんのう", "romaji": "tameike-sanno", "hangul": "다메이케산노" } },
+    { "stationId": "G07", "sequence": 7, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7495, 35.6697], "names": { "kanji": "虎ノ門", "kana": "とらのもん", "romaji": "toranomon", "hangul": "도라노몬" } },
+    { "stationId": "G08", "sequence": 8, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.758, 35.6665], "names": { "kanji": "新橋", "kana": "しんばし", "romaji": "shimbashi", "hangul": "신바시" } },
+    { "stationId": "G09", "sequence": 9, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7639, 35.6717], "names": { "kanji": "銀座", "kana": "ぎんざ", "romaji": "ginza", "hangul": "긴자" } },
+    { "stationId": "G10", "sequence": 10, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7708, 35.6767], "names": { "kanji": "京橋", "kana": "きょうばし", "romaji": "kyobashi", "hangul": "교바시" } },
+    { "stationId": "G11", "sequence": 11, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7737, 35.6832], "names": { "kanji": "日本橋", "kana": "にほんばし", "romaji": "nihombashi", "hangul": "니혼바시" } },
+    { "stationId": "G12", "sequence": 12, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7734, 35.6864], "names": { "kanji": "三越前", "kana": "みつこしまえ", "romaji": "mitsukoshimae", "hangul": "미쓰코시마에" } },
+    { "stationId": "G13", "sequence": 13, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7708, 35.6917], "names": { "kanji": "神田", "kana": "かんだ", "romaji": "kanda", "hangul": "간다" } },
+    { "stationId": "G14", "sequence": 14, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7734, 35.6989], "names": { "kanji": "末広町", "kana": "すえひろちょう", "romaji": "suehirocho", "hangul": "스에히로초" } },
+    { "stationId": "G15", "sequence": 15, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7736, 35.7079], "names": { "kanji": "上野広小路", "kana": "うえのひろこうじ", "romaji": "ueno-hirokoji", "hangul": "우에노히로코지" } },
+    { "stationId": "G16", "sequence": 16, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7774, 35.7141], "names": { "kanji": "上野", "kana": "うえの", "romaji": "ueno", "hangul": "우에노" } },
+    { "stationId": "G17", "sequence": 17, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7869, 35.7118], "names": { "kanji": "稲荷町", "kana": "いなりちょう", "romaji": "inaricho", "hangul": "이나리초" } },
+    { "stationId": "G18", "sequence": 18, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7913, 35.7108], "names": { "kanji": "田原町", "kana": "たわらまち", "romaji": "tawaramachi", "hangul": "다와라마치" } },
+    { "stationId": "G19", "sequence": 19, "operatorCode": "TokyoMetro", "lineCode": "G", "coordinates": [139.7967, 35.7119], "names": { "kanji": "浅草", "kana": "あさくさ", "romaji": "asakusa", "hangul": "아사쿠사" } }
+  ]
+}

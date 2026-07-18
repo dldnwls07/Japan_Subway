@@ -1,0 +1,26 @@
+[
+  { "kanji": "新宿", "kana": "しんじゅく", "expected_hangul": "신주쿠", "source": "국립국어원 외래어 표기 용례집" },
+  { "kanji": "札幌", "kana": "さっぽろ", "expected_hangul": "삿포로", "source": "국립국어원 외래어 표기 용례집" },
+  { "kanji": "東京", "kana": "とうきょう", "expected_hangul": "도쿄", "source": "국립국어원 고시 (장모음 생략 원칙)" },
+  { "kanji": "羽田空港", "kana": "はねだくうこう", "expected_hangul": "하네다공항", "source": "정규화 사전 (의미역 적용)" },
+
+  { "kanji": "渋谷", "kana": "しぶや", "expected_hangul": "시부야", "source": "Phase 0 초안 (긴자선 1/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "表参道", "kana": "おもてさんどう", "expected_hangul": "오모테산도", "source": "Phase 0 초안 (긴자선 2/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "外苑前", "kana": "がいえんまえ", "expected_hangul": "가이엔마에", "source": "Phase 0 초안 (긴자선 3/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "青山一丁目", "kana": "あおやまいっちょうめ", "expected_hangul": "아오야마잇초메", "source": "Phase 0 초안 (긴자선 4/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "赤坂見附", "kana": "あかさかみつけ", "expected_hangul": "아카사카미쓰케", "source": "Phase 0 초안 (긴자선 5/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "溜池山王", "kana": "ためいけさんのう", "expected_hangul": "다메이케산노", "source": "Phase 0 초안 (긴자선 6/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "虎ノ門", "kana": "とらのもん", "expected_hangul": "도라노몬", "source": "Phase 0 초안 (긴자선 7/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "新橋", "kana": "しんばし", "expected_hangul": "신바시", "source": "Phase 0 초안 (긴자선 8/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "銀座", "kana": "ぎんざ", "expected_hangul": "긴자", "source": "Phase 0 초안 (긴자선 9/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "京橋", "kana": "きょうばし", "expected_hangul": "교바시", "source": "Phase 0 초안 (긴자선 10/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "日本橋", "kana": "にほんばし", "expected_hangul": "니혼바시", "source": "Phase 0 초안 (긴자선 11/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "三越前", "kana": "みつこしまえ", "expected_hangul": "미쓰코시마에", "source": "Phase 0 초안 (긴자선 12/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "神田", "kana": "かんだ", "expected_hangul": "간다", "source": "Phase 0 초안 (긴자선 13/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "末広町", "kana": "すえひろちょう", "expected_hangul": "스에히로초", "source": "Phase 0 초안 (긴자선 14/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "上野広小路", "kana": "うえのひろこうじ", "expected_hangul": "우에노히로코지", "source": "Phase 0 초안 (긴자선 15/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "上野", "kana": "うえの", "expected_hangul": "우에노", "source": "Phase 0 초안 (긴자선 16/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "稲荷町", "kana": "いなりちょう", "expected_hangul": "이나리초", "source": "Phase 0 초안 (긴자선 17/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "田原町", "kana": "たわらまち", "expected_hangul": "다와라마치", "source": "Phase 0 초안 (긴자선 18/19) — 국립국어원 용례집 개별 대조 필요" },
+  { "kanji": "浅草", "kana": "あさくさ", "expected_hangul": "아사쿠사", "source": "Phase 0 초안 (긴자선 19/19) — 국립국어원 용례집 개별 대조 필요" }
+]

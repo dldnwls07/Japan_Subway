@@ -1,0 +1,26 @@
+[
+  {
+    "pattern": "くうこう",
+    "type": "exact",
+    "replacement": "공항",
+    "reason": "공항(空港)은 의미역 적용 — 음역(쿠코오류) 대신 관용 번역어 사용. exceptions.json 원안은 이 패턴을 한자(空港)로 적었으나 kanaToHangul()은 가나 문자열을 받으므로 가나 표기(くうこう)로 수정했다."
+  },
+  {
+    "pattern": "まえ$",
+    "type": "regex",
+    "replacement": "마에",
+    "reason": "역명 접미사 -앞(前)의 음역 표기. 알고리즘 결과와 동일하나 규칙 변경에 대비해 명시적으로 고정한다."
+  },
+  {
+    "pattern": "いりぐち$",
+    "type": "regex",
+    "replacement": "이리구치",
+    "reason": "역명 접미사 -입구(入口)의 음역 표기. 알고리즘 결과와 동일하나 명시적으로 고정한다."
+  },
+  {
+    "pattern": "ターミナル",
+    "type": "exact",
+    "replacement": "터미널",
+    "reason": "외래어(ターミナル=terminal)의 관용적 한글 표기, 음역 대신 의미역 적용."
+  }
+]

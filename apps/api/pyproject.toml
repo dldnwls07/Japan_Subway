@@ -1,0 +1,16 @@
+[project]
+name = "metro-typing-api"
+version = "0.0.1"
+description = "일본 지하철역 타자 게임 랭킹/스코어 백엔드 (backend-spec.md 참고). Phase 1+ 대상 — 아직 DB/Redis 연동 전이다."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.7",
+    "mypy>=1.13",
+    "pytest>=8.3",
+]

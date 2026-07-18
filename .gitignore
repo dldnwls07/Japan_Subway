@@ -51,9 +51,21 @@ ios/Pods/
 
 # Testing
 coverage
+.playwright-mcp
 
 # Cache
 .eslintcache
+.turbo
+
+# Python (apps/api)
+apps/api/.venv/
+apps/api/__pycache__/
+**/__pycache__/
+*.pyc
 
 # Claude Code
 .claude/
+
+# Oh My OpenAgent integration (unrelated tooling, not part of this project)
+omo/
+OmO_SETUP.md
