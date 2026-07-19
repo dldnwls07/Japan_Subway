@@ -46,6 +46,7 @@ class RunToken:
     token: UUID = field(default_factory=uuid4)
     issued_at: datetime = field(default_factory=_utcnow)
     consumed: bool = False
+    run_id: UUID | None = None  # set on consumption; backs idempotent /runs/complete replays
 
 
 @dataclass
@@ -85,7 +86,8 @@ class Store(Protocol):
 
     def add_run_token(self, device_id: UUID, line_id: str, mode: str) -> RunToken: ...
     def get_run_token(self, token: UUID) -> RunToken | None: ...
-    def consume_run_token(self, token: UUID) -> None: ...
+    def consume_run_token(self, token: UUID, run_id: UUID) -> None: ...
+    def run_for_token(self, token: UUID) -> Run | None: ...
 
     def add_run(self, run: Run) -> Run: ...
     def top_wpm(self, line_id: str, mode: str) -> float | None: ...
@@ -102,6 +104,7 @@ class InMemoryStore:
         self._lines: dict[str, Line] = {}
         self._run_tokens: dict[UUID, RunToken] = {}
         self._runs: list[Run] = []
+        self._runs_by_id: dict[UUID, Run] = {}
         self._access_tokens: dict[str, UUID] = {}
 
     # devices -----------------------------------------------------------------
@@ -140,14 +143,22 @@ class InMemoryStore:
     def get_run_token(self, token: UUID) -> RunToken | None:
         return self._run_tokens.get(token)
 
-    def consume_run_token(self, token: UUID) -> None:
+    def consume_run_token(self, token: UUID, run_id: UUID) -> None:
         row = self._run_tokens.get(token)
         if row is not None:
             row.consumed = True
+            row.run_id = run_id
+
+    def run_for_token(self, token: UUID) -> Run | None:
+        row = self._run_tokens.get(token)
+        if row is None or row.run_id is None:
+            return None
+        return self._runs_by_id.get(row.run_id)
 
     # runs / ranking ----------------------------------------------------------
     def add_run(self, run: Run) -> Run:
         self._runs.append(run)
+        self._runs_by_id[run.id] = run
         return run
 
     def _best_per_device(self, line_id: str, mode: str) -> dict[UUID, Run]:

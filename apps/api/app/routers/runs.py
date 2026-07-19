@@ -13,7 +13,7 @@ from fastapi import APIRouter, HTTPException, status
 from app.config import settings
 from app.deps import CurrentDevice, StoreDep
 from app.schemas import CompleteRunRequest, CompleteRunResponse, StartRunRequest, StartRunResponse
-from app.services.anti_cheat import should_flag_for_review, validate_run
+from app.services.anti_cheat import should_flag_for_review, validate_run, validate_timing
 from app.store import Run
 
 router = APIRouter(prefix="/runs", tags=["runs"])
@@ -43,13 +43,27 @@ async def complete_run(
     payload: CompleteRunRequest, store: StoreDep, device: CurrentDevice
 ) -> CompleteRunResponse:
     token_row = store.get_run_token(payload.run_token)
+    if token_row is not None and token_row.consumed and token_row.device_id == device.id:
+        run = store.run_for_token(token_row.token)
+        if run is not None:
+            rank = store.rank_of(device.id, run.line_id, run.mode)
+            assert rank is not None
+            return CompleteRunResponse(
+                run_id=run.id,
+                wpm=run.wpm,
+                cpm=run.cpm,
+                rank=rank,
+                verified=not run.is_flagged,
+            )
+
     if token_row is None or token_row.consumed or token_row.device_id != device.id:
         raise HTTPException(
             status_code=422,
             detail={"code": "invalid_or_used_token", "message": "run_token이 없거나 이미 사용되었습니다."},
         )
 
-    age_sec = (datetime.now(timezone.utc) - token_row.issued_at).total_seconds()
+    elapsed = datetime.now(timezone.utc) - token_row.issued_at
+    age_sec = elapsed.total_seconds()
     if age_sec > settings.run_token_ttl_seconds:
         raise HTTPException(
             status_code=422,
@@ -71,7 +85,14 @@ async def complete_run(
             detail={"code": result.error_code, "message": "기록 검증에 실패했습니다."},
         )
 
-    store.consume_run_token(token_row.token)
+    timing_result = validate_timing(payload.duration_ms, elapsed.total_seconds() * 1000)
+    if not timing_result.ok:
+        assert timing_result.error_code is not None
+        raise HTTPException(
+            status_code=422,
+            detail={"code": timing_result.error_code, "message": "기록 검증에 실패했습니다."},
+        )
+
     wpm, cpm = _compute_metrics(payload.duration_ms, payload.keystrokes)
 
     top_wpm = store.top_wpm(token_row.line_id, token_row.mode)
@@ -90,6 +111,7 @@ async def complete_run(
             is_flagged=is_flagged,
         )
     )
+    store.consume_run_token(token_row.token, run.id)
     rank = store.rank_of(device.id, token_row.line_id, token_row.mode)
     assert rank is not None
     return CompleteRunResponse(run_id=run.id, wpm=wpm, cpm=cpm, rank=rank, verified=not is_flagged)

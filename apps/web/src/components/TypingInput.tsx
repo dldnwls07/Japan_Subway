@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { useComposedInput } from "@metro-typing/core-engine";
 
 interface TypingInputProps {
   expectedText: string;
-  correctLength: number; // 실제로 일치한 접두 길이 — 오타의 꼬리 글자까지 정답으로 칠하지 않기 위해 composedText.length 대신 사용
+  correctLength: number;
   isErrorState: boolean;
   disabled: boolean;
   onSettledChange: (value: string) => void;
@@ -31,24 +31,15 @@ export function TypingInput({
     if (!disabled) inputRef.current?.focus();
   }, [disabled, expectedText]);
 
-  // 역이 바뀌면(expectedText 변경) input 값도 비워 다음 역 입력을 새로 받는다.
   useEffect(() => {
     if (inputRef.current) inputRef.current.value = "";
   }, [expectedText]);
 
   return (
     <div>
-      <div
-        style={{
-          fontSize: 28,
-          letterSpacing: 2,
-          fontFamily: "monospace",
-          color: isErrorState ? "#f87171" : "#e5e7eb",
-        }}
-        aria-live="polite"
-      >
+      <div style={getExpectedTextStyle(isErrorState)} aria-live="polite">
         {[...expectedText].map((char, i) => (
-          <span key={i} style={{ color: i < correctLength ? "#22d3ee" : undefined }}>
+          <span key={i} style={i < correctLength ? HIGHLIGHT_STYLE : undefined}>
             {char}
           </span>
         ))}
@@ -58,18 +49,7 @@ export function TypingInput({
         disabled={disabled}
         aria-label="역 이름 입력"
         placeholder="여기에 역 이름을 입력하세요"
-        style={{
-          boxSizing: "border-box",
-          width: "min(100%, 440px)",
-          marginTop: 12,
-          padding: "12px 14px",
-          border: `2px solid ${isErrorState ? "#f87171" : "#22d3ee"}`,
-          borderRadius: 8,
-          background: "#1f2937",
-          color: "#f9fafb",
-          fontSize: 20,
-          outline: "none",
-        }}
+        style={getInputFieldStyle(isErrorState)}
         onCompositionStart={handleCompositionStart}
         onCompositionEnd={handleCompositionEnd}
         onInput={handleInput}
@@ -81,3 +61,28 @@ export function TypingInput({
     </div>
   );
 }
+
+// Styling Constants & Helpers
+const getExpectedTextStyle = (isErrorState: boolean): CSSProperties => ({
+  fontSize: 28,
+  letterSpacing: 2,
+  fontFamily: "monospace",
+  color: isErrorState ? "#f87171" : "#e5e7eb",
+});
+
+const getInputFieldStyle = (isErrorState: boolean): CSSProperties => ({
+  boxSizing: "border-box",
+  width: "min(100%, 440px)",
+  marginTop: 12,
+  padding: "12px 14px",
+  border: `2px solid ${isErrorState ? "#f87171" : "#22d3ee"}`,
+  borderRadius: 8,
+  background: "#1f2937",
+  color: "#f9fafb",
+  fontSize: 20,
+  outline: "none",
+});
+
+const HIGHLIGHT_STYLE: CSSProperties = {
+  color: "#22d3ee",
+};

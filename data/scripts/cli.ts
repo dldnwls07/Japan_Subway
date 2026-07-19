@@ -10,9 +10,7 @@
 //
 // 인자로 파일을 주지 않으면 data/parsed/ 아래 기본 대상을 검사한다.
 
-import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import {
   enrichLine,
   formatValidationReport,
@@ -20,33 +18,23 @@ import {
   type LineData,
 } from "./generate-names";
 import { getNameOverrides } from "./name-overrides";
-
-const scriptDir = dirname(fileURLToPath(import.meta.url));
-const parsedDir = resolve(scriptDir, "..", "parsed");
+import { readLineFile, writeLineFile, PARSED_DIR } from "./parsed-files";
 
 const DEFAULT_TARGETS = ["ginza-line.json"];
-
-function readLine(path: string): LineData {
-  return JSON.parse(readFileSync(path, "utf8")) as LineData;
-}
-
-function writeLine(path: string, line: LineData): void {
-  writeFileSync(path, `${JSON.stringify(line, null, 2)}\n`, "utf8");
-}
 
 function main(): void {
   const args = process.argv.slice(2);
   const write = args.includes("--write");
   const fileArgs = args.filter((a) => !a.startsWith("--"));
-  const targets = fileArgs.length > 0 ? fileArgs : DEFAULT_TARGETS.map((f) => resolve(parsedDir, f));
+  const targets = fileArgs.length > 0 ? fileArgs : DEFAULT_TARGETS.map((f) => resolve(PARSED_DIR, f));
 
   let totalMismatches = 0;
   for (const target of targets) {
     const path = resolve(target);
-    const line = readLine(path);
+    const line = readLineFile(path);
 
     if (write) {
-      writeLine(path, enrichLine(line, getNameOverrides(line.lineId)));
+      writeLineFile(path, enrichLine(line, getNameOverrides(line.lineId)));
       console.log(`[${line.lineId}] --write: ${path} 갱신 완료 (romaji/hangul 재생성)`);
       continue;
     }

@@ -1,12 +1,17 @@
 """Leaderboard read + personal-best read."""
 
+from datetime import timedelta
 from typing import Any, cast
+from uuid import UUID
 
 from fastapi.testclient import TestClient
+
+from app.store import InMemoryStore
 
 
 def _submit(
     client: TestClient,
+    store: InMemoryStore,
     headers: dict[str, str],
     keystrokes: int,
     duration_ms: int = 45230,
@@ -17,6 +22,9 @@ def _submit(
         json={"line_id": "tokyo-metro-ginza", "mode": "speed_run"},
     )
     run_token = start.json()["run_token"]
+    token_row = store.get_run_token(UUID(run_token))
+    assert token_row is not None
+    token_row.issued_at -= timedelta(milliseconds=60_000)
     resp = client.post(
         "/api/v1/runs/complete",
         headers=headers,
@@ -40,11 +48,11 @@ def test_empty_leaderboard(client: TestClient) -> None:
     assert body["items"] == []
 
 
-def test_leaderboard_orders_by_wpm_desc(client: TestClient) -> None:
+def test_leaderboard_orders_by_wpm_desc(client: TestClient, store: InMemoryStore) -> None:
     fast = _headers_for(client, "빠른손")
     slow = _headers_for(client, "느린손")
-    _submit(client, slow, keystrokes=200)
-    _submit(client, fast, keystrokes=312)
+    _submit(client, store, slow, keystrokes=200)
+    _submit(client, store, fast, keystrokes=312)
 
     resp = client.get("/api/v1/rankings", params={"line_id": "tokyo-metro-ginza", "mode": "speed_run"})
     assert resp.status_code == 200
@@ -65,8 +73,10 @@ def test_leaderboard_pagination_limit_bounds(client: TestClient) -> None:
     assert resp.status_code == 422
 
 
-def test_rankings_me_returns_personal_bests(client: TestClient, auth_headers: dict[str, str]) -> None:
-    _submit(client, auth_headers, keystrokes=312)
+def test_rankings_me_returns_personal_bests(
+    client: TestClient, store: InMemoryStore, auth_headers: dict[str, str]
+) -> None:
+    _submit(client, store, auth_headers, keystrokes=312)
     resp = client.get("/api/v1/rankings/me", headers=auth_headers)
     assert resp.status_code == 200
     body = resp.json()

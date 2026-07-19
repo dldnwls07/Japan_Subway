@@ -5,37 +5,45 @@ import type { NormalizationRule } from "./types";
 
 const rules = exceptionRules as NormalizationRule[];
 
+function consumeHangulSyllable(
+  chars: string[],
+  index: number,
+  table: Record<string, string>
+): { syllable: string; nextIndex: number } {
+  const char = chars[index];
+  const nextChar = chars[index + 1];
+  const combined = nextChar ? char + nextChar : "";
+  if (combined && table[combined]) {
+    return { syllable: table[combined], nextIndex: index + 2 };
+  }
+  return { syllable: table[char] ?? char, nextIndex: index + 1 };
+}
+
 export function kanaToHangul(kana: string): string {
   const normalized = applyNormalizationDict(kana);
   const chars = [...normalized];
   let result = "";
+  let i = 0;
 
-  for (let i = 0; i < chars.length; i++) {
+  while (i < chars.length) {
     const char = chars[i];
     const nextChar = chars[i + 1];
-    const isWordInitial = i === 0;
 
     if (char === "っ" || char === "ッ") {
       result = attachFinalConsonant(result, resolveSokuonJong(nextChar));
+      i++;
       continue;
     }
     if (char === "ん" || char === "ン") {
       result = attachFinalConsonant(result, "ㄴ");
+      i++;
       continue;
     }
 
-    const table = isWordInitial ? INITIAL_MAP : MEDIAL_MAP;
-
-    // 요음(きゃ 등)은 2글자 조합이므로, 다음 글자와 합쳐 테이블에 있으면 함께 소비한다.
-    const combined = nextChar ? char + nextChar : "";
-    if (combined && table[combined]) {
-      result += table[combined];
-      i++; // 요음 두 번째 글자(小書きゃゅょ) 건너뛰기
-      continue;
-    }
-
-    // 이미 정규화 사전에서 한글로 치환된 구간(예: くうこう -> 공항)은 테이블에 없으므로 그대로 통과한다.
-    result += table[char] ?? char;
+    const table = i === 0 ? INITIAL_MAP : MEDIAL_MAP;
+    const { syllable, nextIndex } = consumeHangulSyllable(chars, i, table);
+    result += syllable;
+    i = nextIndex;
   }
 
   return applyLongVowelTruncation(result);

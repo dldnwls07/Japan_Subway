@@ -1,6 +1,6 @@
 """Unit tests for the anti-cheat validator (backend-spec.md §9)."""
 
-from app.services.anti_cheat import should_flag_for_review, validate_run
+from app.services.anti_cheat import should_flag_for_review, validate_run, validate_timing
 from app.store import Line
 
 
@@ -41,3 +41,14 @@ def test_rejects_duration_below_theoretical_minimum() -> None:
 def test_should_flag_for_review() -> None:
     assert should_flag_for_review(wpm=120.0, line_top_wpm=100.0) is True
     assert should_flag_for_review(wpm=105.0, line_top_wpm=100.0) is False
+
+
+def test_rejects_duration_longer_than_observed_elapsed_time() -> None:
+    result = validate_timing(duration_ms=45_000, elapsed_ms=1_000, tolerance_ms=5_000)
+    assert not result.ok
+    assert result.error_code == "duration_exceeds_elapsed"
+
+
+def test_accepts_duration_within_observed_elapsed_tolerance() -> None:
+    result = validate_timing(duration_ms=6_000, elapsed_ms=1_500, tolerance_ms=5_000)
+    assert result.ok

@@ -22,6 +22,7 @@ declare module "node:path" {
 }
 
 declare module "node:fs" {
+  export function readdirSync(path: string): string[];
   export function readFileSync(path: string, encoding: "utf8"): string;
   export function writeFileSync(path: string, data: string, encoding: "utf8"): void;
 }

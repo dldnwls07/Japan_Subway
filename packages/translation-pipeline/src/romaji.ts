@@ -62,50 +62,66 @@ function isCondensedLongVowel(syllable: string, prevOutput: string): boolean {
   return false;
 }
 
+interface RomajiState {
+  result: string;
+  pendingSokuon: boolean;
+  pendingN: boolean;
+}
+
+function consumeToken(chars: string[], index: number): { token: string; nextIndex: number } {
+  const char = chars[index];
+  const nextChar = chars[index + 1];
+  if (nextChar && SMALL_YAYUYO.includes(nextChar) && ROMAJI_TABLE[char + nextChar]) {
+    return { token: char + nextChar, nextIndex: index + 2 };
+  }
+  return { token: char, nextIndex: index + 1 };
+}
+
+function processSyllable(state: RomajiState, syllable: string): void {
+  if (state.pendingN) {
+    state.result += resolveN(syllable[0]);
+    state.pendingN = false;
+  }
+  if (state.pendingSokuon) {
+    state.result += geminate(syllable);
+    state.pendingSokuon = false;
+  } else if (isCondensedLongVowel(syllable, state.result)) {
+    return;
+  }
+  state.result += syllable;
+}
+
 export function kanaToRomaji(kana: string): string {
   const chars = [...toHiragana(kana)];
-  let result = "";
-  let pendingSokuon = false;
-  let pendingN = false;
+  const state: RomajiState = { result: "", pendingSokuon: false, pendingN: false };
+  let i = 0;
 
-  for (let i = 0; i < chars.length; i++) {
+  while (i < chars.length) {
     const char = chars[i];
 
     if (char === "っ") {
-      pendingSokuon = true;
+      state.pendingSokuon = true;
+      i++;
       continue;
     }
-    // 가타카나 장음 기호: 앞 모음의 장음이므로 おう·おお와 동일하게 축약(생략)한다.
     if (char === "ー") {
+      i++;
       continue;
     }
     if (char === "ん") {
-      pendingN = true;
-      continue;
-    }
-
-    // 요음은 2글자 조합이므로 다음 글자가 小書き(ゃゅょ)면 합쳐 소비한다.
-    const nextChar = chars[i + 1];
-    let token = char;
-    if (nextChar && SMALL_YAYUYO.includes(nextChar) && ROMAJI_TABLE[char + nextChar]) {
-      token = char + nextChar;
+      state.pendingN = true;
       i++;
-    }
-    const syllable = ROMAJI_TABLE[token] ?? token;
-
-    if (pendingN) {
-      result += resolveN(syllable[0]);
-      pendingN = false;
-    }
-    if (pendingSokuon) {
-      result += geminate(syllable);
-      pendingSokuon = false;
-    } else if (isCondensedLongVowel(syllable, result)) {
       continue;
     }
-    result += syllable;
+
+    const { token, nextIndex } = consumeToken(chars, i);
+    const syllable = ROMAJI_TABLE[token] ?? token;
+    processSyllable(state, syllable);
+    i = nextIndex;
   }
 
-  if (pendingN) result += "n";
-  return result;
+  if (state.pendingN) {
+    state.result += "n";
+  }
+  return state.result;
 }
