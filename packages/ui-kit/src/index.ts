@@ -1,4 +1,14 @@
-// 디자인 시스템 자리 표시자. Phase 0의 apps/web은 아직 인라인 스타일로 직접 렌더링한다
-// (App.tsx, components/*.tsx 참고). 웹·모바일 공유 버튼/프로그레스 바/타이포그래피
-// 컴포넌트가 필요해지는 Phase 1(정식 웹 출시) 준비 단계에서 이 패키지를 채운다.
-export {};
+// @metro-typing/ui-kit — 웹·모바일이 공유하는 프레젠테이션 전용 디자인 시스템.
+// React에만 의존하며, apps/web의 인라인 스타일에서 반복되던 버튼/프로그레스 바/타이포
+// 패턴을 재사용 가능한 컴포넌트와 토큰으로 추출한 것이다.
+export { Button } from "./Button";
+export type { ButtonProps, ButtonVariant } from "./Button";
+
+export { ProgressBar } from "./ProgressBar";
+export type { ProgressBarProps } from "./ProgressBar";
+
+export { Text, Heading } from "./Typography";
+export type { TextProps, HeadingProps, HeadingLevel } from "./Typography";
+
+export { tokens } from "./tokens";
+export type { FontSize, ColorToken } from "./tokens";

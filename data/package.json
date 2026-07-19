@@ -1,0 +1,21 @@
+{
+  "name": "@metro-typing/data",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:names": "node ../node_modules/.pnpm/node_modules/vite-node/vite-node.mjs scripts/cli.ts",
+    "validate:names": "vitest run scripts/validate-golden.test.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'lint: TODO — eslint 설정은 Phase 1에서 추가'"
+  },
+  "dependencies": {
+    "@metro-typing/translation-pipeline": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
